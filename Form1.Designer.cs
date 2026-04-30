@@ -41,11 +41,14 @@
             gpThickness = new GroupBox();
             trbLineWidth = new TrackBar();
             picCanvas = new PictureBox();
+            pnlCanvas = new Panel();
+            panel2 = new Panel();
             gpDiagram.SuspendLayout();
             gpColor.SuspendLayout();
             gpThickness.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trbLineWidth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picCanvas).BeginInit();
+            pnlCanvas.SuspendLayout();
             SuspendLayout();
             // 
             // lblAppName
@@ -78,6 +81,7 @@
             btnOpenFile.TabIndex = 2;
             btnOpenFile.Text = "Open";
             btnOpenFile.UseVisualStyleBackColor = true;
+            btnOpenFile.Click += btnOpenFile_Click;
             // 
             // btnSaveFile
             // 
@@ -173,9 +177,9 @@
             // picCanvas
             // 
             picCanvas.BackColor = SystemColors.ControlLightLight;
-            picCanvas.Location = new Point(101, 288);
+            picCanvas.Location = new Point(17, 10);
             picCanvas.Name = "picCanvas";
-            picCanvas.Size = new Size(1111, 485);
+            picCanvas.Size = new Size(1212, 521);
             picCanvas.TabIndex = 7;
             picCanvas.TabStop = false;
             picCanvas.Paint += PicCanvas_Paint;
@@ -183,12 +187,29 @@
             picCanvas.MouseMove += picCanvas_MouseMove;
             picCanvas.MouseUp += picCanvas_MouseUp;
             // 
+            // pnlCanvas
+            // 
+            pnlCanvas.AutoScroll = true;
+            pnlCanvas.Controls.Add(panel2);
+            pnlCanvas.Controls.Add(picCanvas);
+            pnlCanvas.Location = new Point(54, 257);
+            pnlCanvas.Name = "pnlCanvas";
+            pnlCanvas.Size = new Size(1232, 542);
+            pnlCanvas.TabIndex = 8;
+            // 
+            // panel2
+            // 
+            panel2.Location = new Point(51, 31);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(8, 8);
+            panel2.TabIndex = 0;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(14F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1349, 800);
-            Controls.Add(picCanvas);
+            Controls.Add(pnlCanvas);
             Controls.Add(gpThickness);
             Controls.Add(gpColor);
             Controls.Add(gpDiagram);
@@ -203,6 +224,7 @@
             gpThickness.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trbLineWidth).EndInit();
             ((System.ComponentModel.ISupportInitialize)picCanvas).EndInit();
+            pnlCanvas.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -221,5 +243,7 @@
         private GroupBox gpThickness;
         private TrackBar trbLineWidth;
         private PictureBox picCanvas;
+        private Panel pnlCanvas;
+        private Panel panel2;
     }
 }

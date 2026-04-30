@@ -43,6 +43,8 @@ namespace SimplePaint
             trbLineWidth.Maximum = 10;   // 최대값
             trbLineWidth.Value = 2;
             trbLineWidth.ValueChanged += trbLineWidth_ValueChanged;
+            this.MouseWheel += new MouseEventHandler(Form1_MouseWheel);
+            picCanvas.MouseWheel += new MouseEventHandler(Form1_MouseWheel);
 
 
         }
@@ -177,6 +179,78 @@ namespace SimplePaint
                         canvasBitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
                     MessageBox.Show("저장이 완료되었습니다.");
+                }
+            }
+        }
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "이미지 파일|*.png;*.jpg;*.jpeg;*.bmp";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // 외부 이미지 로드 [cite: 203]
+                    Image loadedImage = Image.FromFile(openFileDialog.FileName);
+
+                    // 이미지 크기에 맞는 새 비트맵 생성 및 캔버스 교체 [cite: 201]
+                    canvasBitmap = new Bitmap(loadedImage);
+                    canvasGraphics = Graphics.FromImage(canvasBitmap);
+
+                    // PictureBox 업데이트 및 크기 조정 
+                    picCanvas.Image = canvasBitmap;
+                    picCanvas.SizeMode = PictureBoxSizeMode.AutoSize; // 이미지 크기에 맞춤
+
+                    loadedImage.Dispose();
+                    picCanvas.Invalidate();
+                }
+            }
+        }
+        // 현재 확대 배율 (1.0 = 100%)
+        private double zoomScale = 1.0;
+
+        // 확대/축소 실행 함수
+        private void ApplyZoom(double scale)
+        {
+            zoomScale = scale;
+
+            if (canvasBitmap != null)
+            {
+                // 1. 이미지의 원본 크기에 배율을 곱하여 PictureBox 크기 설정
+                picCanvas.Width = (int)(canvasBitmap.Width * zoomScale);
+                picCanvas.Height = (int)(canvasBitmap.Height * zoomScale);
+
+                // 2. PictureBox의 SizeMode를 Zoom으로 설정하여 크기에 맞게 이미지가 늘어나도록 함
+                picCanvas.SizeMode = PictureBoxSizeMode.Zoom;
+
+                // 3. 부모 패널의 스크롤바 갱신
+                picCanvas.Invalidate();
+            }
+        }
+        private void Form1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            // 마우스 휠을 위로 돌리면 Delta가 양수(+)가 됩니다.
+            // Control 키가 눌려있는지 확인하는 알고리즘
+            if (ModifierKeys == Keys.Control)
+            {
+                // 휠을 위로 돌리면 확대, 아래로 돌리면 축소
+                if (e.Delta > 0)
+                {
+                    ApplyZoom(zoomScale + 0.1); // 10% 확대
+                }
+                else
+                {
+                    if (zoomScale > 0.2) // 최소 배율 제한
+                    {
+                        ApplyZoom(zoomScale - 0.1); // 10% 축소
+                    }
+                }
+                // 스크롤 이벤트가 픽처박스나 패널로 전달되지 않도록 처리 (선택 사항)
+                // HandledMouseEventArgs를 사용하면 스크롤 방지가 가능합니다.
+                if (e is HandledMouseEventArgs hme)
+                {
+                    hme.Handled = true;
                 }
             }
         }
