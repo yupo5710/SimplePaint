@@ -88,6 +88,7 @@
             btnSaveFile.TabIndex = 3;
             btnSaveFile.Text = "Save";
             btnSaveFile.UseVisualStyleBackColor = true;
+            btnSaveFile.Click += btnSaveFile_Click;
             // 
             // gpDiagram
             // 

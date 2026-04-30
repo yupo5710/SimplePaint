@@ -37,10 +37,14 @@
 ## 실행 화면 (과제3)
 - 코드의 실행 스크린샷과 구현 내용 설명
   ![실행화면](img/screenshot-3.png)
+  ![실행화면](img/screenshot-3.1.png)
   
 
 - 구현한 내용 (위 그림 참조)
-
+  - SaveFileDialog의 Filter 속성을 설정하여 사용자가 원하는 확장자를 선택할 수 있도록 구현함
+  - Bitmap.Save() 메서드를 사용하여 현재 캔버스(canvasBitmap)의 데이터를 실제 파일로 변환하여 저장함
+  - 파일명의 끝자리를 확인하여 선택한 포맷에 맞는 ImageFormat(Png, Jpeg, Bmp)을 적용하는 로직을 작성함     
+    `if (saveFileDialog.ShowDialog() == DialogResult.OK) { canvasBitmap.Save(fileName, format); }`
 ## 실행 화면 (과제4)
 - 코드의 실행 스크린샷과 구현 내용 설명
   ![실행화면](img/screenshot-4.png)
