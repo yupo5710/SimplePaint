@@ -51,3 +51,8 @@
   ![실행화면](img/screenshot-5.png)
   
 - 구현한 내용 (위 그림 참조)
+  - OpenFileDialog로 선택한 이미지에서 Bitmap을 생성하여 canvasBitmap을 초기화하고, PictureBox의 Size를 이미지 원본 크기와 동기화함
+  - PictureBox의 SizeMode를 Zoom으로 설정하고, zoomScale 변수를 활용하여 Control+마우스 휠 조작 시 실시간으로 배율을 조정함
+  - 확대된 상태에서 마우스 좌표가 어긋나지 않도록 `(int)(e.X / zoomScale)` 공식을 사용하여 이미지상의 실제 픽셀 좌표를 계산함
+  - HandledMouseEventArgs를 사용하여 확대/축소 시 패널의 기본 스크롤 동작이 간섭하지 않도록 제어 로직을 구현함
+    `picCanvas.Width = (int)(canvasBitmap.Width * zoomScale); picCanvas.Invalidate();`
