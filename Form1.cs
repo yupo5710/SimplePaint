@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using static System.Windows.Forms.LinkLabel;
 
@@ -48,7 +49,7 @@ namespace SimplePaint
 
         private void btnLine_Click(object sender, EventArgs e)
         {
-
+            currentTool = ToolType.Line;
         }
         private void cmbColor_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -75,37 +76,81 @@ namespace SimplePaint
 
         private void PicCanvas_Paint(object sender, PaintEventArgs e)
         {
-
+            if (!isDrawing) return;
+            // 점선펜(미리보기용)
+            using (Pen previewPen = new Pen(currentColor, currentLineWidth))
+            {
+                previewPen.DashStyle = DashStyle.Dash;
+                DrawShape(e.Graphics, previewPen, startPoint, endPoint);
+            }
         }
 
         private void btnRectangle_Click(object sender, EventArgs e)
         {
-
+            currentTool = ToolType.Rectangle;
         }
 
         private void btnCircle_Click(object sender, EventArgs e)
         {
-
+            currentTool = ToolType.Circle;
         }
 
         private void picCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-
+            isDrawing = true;             // 드래그시작
+            startPoint = e.Location;      // 시작점저장
         }
 
         private void picCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-
+            if (!isDrawing) return;       // 그림그리기와상관없는마우스움직임은무시
+            endPoint = e.Location;        // 현재위치갱신
+                                          // picCanvas를다시그려라(Paint 이벤트를발생시킨다)
+            picCanvas.Invalidate();       // 화면다시그리기(미리보기)
         }
 
         private void picCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-
+            if (!isDrawing) return;     // 그림그리기와상관없는마우스움직임은무시
+            isDrawing = false;          // 드래그종료
+            endPoint = e.Location;
+            // 실제비트맵에도형그리기(확정)
+            using (Pen pen = new Pen(currentColor, currentLineWidth))
+            {
+                DrawShape(canvasGraphics, pen, startPoint, endPoint);
+            }
+            picCanvas.Invalidate();     // 다시그려서결과반영, Paint 이벤트발생
         }
 
         private void trbLineWidth_ValueChanged(object sender, EventArgs e)
         {
-
+            currentLineWidth = trbLineWidth.Value;
         }
+        private void DrawShape(Graphics g, Pen pen, Point p1, Point p2)
+        {
+            Rectangle rect = GetRectangle(p1, p2);
+            switch (currentTool)
+            {
+                case ToolType.Line:
+                    g.DrawLine(pen, p1, p2);
+                    break;
+                case ToolType.Rectangle:
+                    g.DrawRectangle(pen, rect);
+                    break;
+                case ToolType.Circle:
+                    g.DrawEllipse(pen, rect);
+                    break;
+            }
+        }
+        private Rectangle GetRectangle(Point p1, Point p2)
+        {
+            return new Rectangle(
+            Math.Min(p1.X, p2.X),
+            Math.Min(p1.Y, p2.Y),
+            Math.Abs(p1.X - p2.X),
+            Math.Abs(p1.Y - p2.Y)
+            );
+        }
+
     }
 }

@@ -1,1 +1,48 @@
-# SimplePaint
+# (C# 코딩) SimplePaint 
+
+## 개요
+- C# 프로그래밍 학습
+- 1줄 소개: 사용자가 도형과 색상, 선 두께를 선택하여 자유롭게 그림을 그릴 수 있는 윈도우 폼 기반 그림판 프로그램
+- 사용한 플랫폼: 
+  - C#, .NET Windows Forms, Visual Studio, GitHub
+- 사용한 컨트롤: 
+  - Label, Button, ComboBox, TrackBar, PictureBox, GroupBox
+- 사용한 기술과 구현한 기능:
+  - Visual Studio를 이용하여 UI 디자인
+  - Bitmap 클래스를 이용한 메모리 기반 캔버스 생성
+  - Graphics 객체를 활용한 그리기 도구 구현
+  - ComboBox와 TrackBar를 활용한 사용자 설정 연동
+
+## 실행 화면 (과제1)
+- 코드의 실행 스크린샷과 구현 내용 설명
+  ![실행화면](img/screenshot-1.png)
+  
+- 구현한 내용 (위 그림 참조)
+  - GroupBox를 사용하여 도형 선택(직선, 사각형, 원)과 색상 및 선 두께 설정을 시각적으로 그룹화함
+  - ComboBox에 색상 항목을 추가하고 SelectedIndexChanged 이벤트를 통해 선택한 색상을 currentColor 변수에 저장함
+  - TrackBar의 범위를 1에서 10으로 설정하여 사용자가 슬라이더를 움직일 때마다 currentLineWidth 값을 갱신하도록 구현함    
+     `if (cmbColor.SelectedIndex == 0) { currentColor = Color.Black; } currentLineWidth = trbLineWidth.Value; `
+
+## 실행 화면 (과제2)
+- 코드의 실행 스크린샷과 구현 내용 설명 
+  ![실행화면](img/screenshot-2.png)
+  
+
+- 구현한 내용 (위 그림 참조)
+  - MouseDown 이벤트에서 드래그 시작점(startPoint)을 저장하고, MouseUp 이벤트에서 최종 위치(endPoint)를 받아 도형 생성을 확정함
+  - GetRectangle 함수를 구현하여 마우스를 어느 방향으로 드래그하더라도 항상 올바른 사각형 영역(좌상단 좌표 및 가로/세로 길이)이 계산되도록 처리함
+  - Pen 객체에 앞서 설정한 currentColor와 currentLineWidth를 적용하여 사용자가 지정한 스타일로 비트맵에 직접 그림을 그림          
+    `if (isDrawing) { DrawShape(canvasGraphics, pen, startPoint, endPoint); } picCanvas.Invalidate();`
+
+## 실행 화면 (과제3)
+- 코드의 실행 스크린샷과 구현 내용 설명
+  ![실행화면](img/screenshot-3.png)
+  
+
+- 구현한 내용 (위 그림 참조)
+
+## 실행 화면 (과제4)
+- 코드의 실행 스크린샷과 구현 내용 설명
+  ![실행화면](img/screenshot-4.png)
+  
+- 구현한 내용 (위 그림 참조)
