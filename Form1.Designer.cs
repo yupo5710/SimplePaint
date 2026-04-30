@@ -167,6 +167,7 @@
             trbLineWidth.Name = "trbLineWidth";
             trbLineWidth.Size = new Size(283, 90);
             trbLineWidth.TabIndex = 0;
+            trbLineWidth.ValueChanged += trbLineWidth_ValueChanged;
             // 
             // picCanvas
             // 

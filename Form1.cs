@@ -28,12 +28,20 @@ namespace SimplePaint
             canvasGraphics.Clear(Color.White);   // 캔버스를흰색으로초기화
             picCanvas.Image = canvasBitmap;   // 그린그림을화면(PictureBox)에표시
                                               // 마우스이벤트연
-            // picCanvas가다시그려질때PicCanvas_Paint함수를실행하도록연결
+                                              // picCanvas가다시그려질때PicCanvas_Paint함수를실행하도록연결
             picCanvas.Paint += PicCanvas_Paint;
             // 도형선택버튼이벤트연결
             btnLine.Click += btnLine_Click;
             btnRectangle.Click += btnRectangle_Click;
             btnCircle.Click += btnCircle_Click;
+            // 색상콤보박스이벤트연결
+            cmbColor.SelectedIndexChanged += cmbColor_SelectedIndexChanged;
+            cmbColor.SelectedIndex = 0;  // 기본값: Black
+                                         // 선두께트랙바이벤트연결
+            trbLineWidth.Minimum = 1;    // 최소값
+            trbLineWidth.Maximum = 10;   // 최대값
+            trbLineWidth.Value = 2;
+            trbLineWidth.ValueChanged += trbLineWidth_ValueChanged;
 
 
         }
@@ -91,6 +99,11 @@ namespace SimplePaint
         }
 
         private void picCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void trbLineWidth_ValueChanged(object sender, EventArgs e)
         {
 
         }
