@@ -99,29 +99,28 @@ namespace SimplePaint
 
         private void picCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-            isDrawing = true;             // 드래그시작
-            startPoint = e.Location;      // 시작점저장
+            isDrawing = true;
+            startPoint = new Point((int)(e.X / zoomScale), (int)(e.Y / zoomScale));
         }
 
         private void picCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!isDrawing) return;       // 그림그리기와상관없는마우스움직임은무시
-            endPoint = e.Location;        // 현재위치갱신
-                                          // picCanvas를다시그려라(Paint 이벤트를발생시킨다)
-            picCanvas.Invalidate();       // 화면다시그리기(미리보기)
+            if (!isDrawing) return;
+            endPoint = new Point((int)(e.X / zoomScale), (int)(e.Y / zoomScale));
+            picCanvas.Invalidate();
         }
 
         private void picCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!isDrawing) return;     // 그림그리기와상관없는마우스움직임은무시
-            isDrawing = false;          // 드래그종료
-            endPoint = e.Location;
-            // 실제비트맵에도형그리기(확정)
+            if (!isDrawing) return;
+            isDrawing = false;
+            endPoint = new Point((int)(e.X / zoomScale), (int)(e.Y / zoomScale));
+
             using (Pen pen = new Pen(currentColor, currentLineWidth))
             {
                 DrawShape(canvasGraphics, pen, startPoint, endPoint);
             }
-            picCanvas.Invalidate();     // 다시그려서결과반영, Paint 이벤트발생
+            picCanvas.Invalidate();
         }
 
         private void trbLineWidth_ValueChanged(object sender, EventArgs e)
